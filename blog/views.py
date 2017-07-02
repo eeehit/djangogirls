@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
+from django.contrib.auth.models import AnonymousUser
 from django.utils import timezone
 from .models import Post
 from .forms import PostForm
@@ -13,6 +14,8 @@ def post_detail(request, pk):
     return render(request, 'blog/post_detail.html', {'post': post})
 
 def post_new(request):
+    if request.user == AnonymousUser():
+        return render(request, 'blog/403.html', {})
     if request.method == "POST":
         form = PostForm(request.POST)
         if form.is_valid():
@@ -27,6 +30,8 @@ def post_new(request):
 
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    if request.user != post.author:
+        return render(request, 'blog/403.html', {})
     if request.method == "POST":
         form = PostForm(request.POST, instance=post)
         if form.is_valid():

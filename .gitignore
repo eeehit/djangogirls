@@ -1,5 +1,6 @@
+.idea/**
 .DS_Store
-*.sqlite3
+db.sqlite3
 *.pyc
 staticfiles/
 uploads/
@@ -22,4 +23,3 @@ static/build/
 static/local/
 static/rev-manifest.json
 temp/
-.idea/
